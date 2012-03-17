@@ -1,3 +1,5 @@
 = comment_only
 
-Description goes here
+this is a plugin for redmine.
+only comments are displayed at issue's history.
+if you want to display all history of issue, you can do it by click "display all history".
