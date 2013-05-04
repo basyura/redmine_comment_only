@@ -1,11 +1,11 @@
 <div id="redmine_comment_only">
 <% reply_links = authorize_for('issues', 'edit') -%>
 <% for journal in journals %>
-  <div id="change-<%= journal.id %>" class="<%= journal.css_classes %>" 
+  <div id="change-<%= journal.id %>" class="<%= journal.css_classes %>"
                   style="display:<%= journal.notes.blank?  ? 'none' : '' %>">
+    <div id="note-<%= journal.indice %>">
     <h4><%= link_to "##{journal.indice}", {:anchor => "note-#{journal.indice}"}, :class => "journal-link" %>
     <%= avatar(journal.user, :size => "24") %>
-    <%= content_tag('a', '', :name => "note-#{journal.indice}")%>
     <%= authoring journal.created_on, journal.user, :label => :label_updated_time_by %></h4>
 
     <% if journal.details.any? %>
@@ -16,6 +16,7 @@
     </ul>
     <% end %>
     <%= render_notes(issue, journal, :reply_links => reply_links) unless journal.notes.blank? %>
+    </div>
   </div>
   <%= call_hook(:view_issues_history_journal_bottom, { :journal => journal }) %>
 <% end %>
@@ -29,19 +30,15 @@
   <%= l(:label_redmine_comment_only_display_all) %>
 </a>
 
-<script>
-  var RedmineCommentOnly = {};
-  RedmineCommentOnly.displayAll = function(ev, target) {
-    if (target == undefined) {
-      target = $("redmine_comment_only");
-    }
-    target.childElements().each(function(ele) {
-      if (ele.tagName == 'DIV' || ele.tagName == 'UL') {
-        ele.style.display = '';
-      }
-      RedmineCommentOnly.displayAll(ev, ele);
-    });
-    $('redmine_comment_only_display_button').style.display = 'none';
-  }
-  $('redmine_comment_only_display_button').observe('click', RedmineCommentOnly.displayAll);
-</script>
+<% content_for :header_tags do %>
+  <script type="text/javascript">
+    //<![CDATA[
+    $(function() {
+      $('#redmine_comment_only_display_button').click(function() {
+        $('#redmine_comment_only div,ul').css('display', '');
+        $(this).css('display', 'none');
+      });
+    }); 
+    //]]> 
+  </script>
+<% end %>
