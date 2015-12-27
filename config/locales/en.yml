@@ -1,5 +1,3 @@
 # English strings go here for Rails i18n
 en:
   label_redmine_comment_only_display_all: 'display all history' 
-ja:
-  label_redmine_comment_only_display_all: '全ての履歴を表示' 
